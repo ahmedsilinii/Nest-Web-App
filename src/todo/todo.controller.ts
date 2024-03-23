@@ -1,4 +1,5 @@
 import { Controller, Delete, Get, Post, Put, Req, Res } from '@nestjs/common';
+import {Request , Response} from 'express'; 
 
 @Controller('todo')
 export class TodoController {
@@ -10,10 +11,15 @@ export class TodoController {
     ){
         //console.log(request);
         //console.log(response);
+        response.status( 500);
+        response.json({
+            contenu : 'prrr'
+        })
         console.log('Recup todos');
 
         return 'Todos list ';
     }
+
 
     @Post()
     addTodo(){
