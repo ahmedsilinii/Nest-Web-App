@@ -6,7 +6,7 @@ export class TodoController {
     @Get()
     getTodos(){
         console.log('Recup todos');
-        return 'Todos list';
+        return 'Todos list ';
     }
 
     @Post()
