@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, Req, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, Query, Req, Res } from '@nestjs/common';
 import {Request , Response} from 'express'; 
 import { Todo } from './entities/todo.entity';
 
@@ -12,7 +12,10 @@ export class TodoController {
     
 
     @Get()
-    getTodos(){
+    getTodos(
+        @Query() mesQueryParams
+    ){
+        console.log(mesQueryParams);
         return this.todos;
     }  
 
