@@ -62,26 +62,13 @@ export class TodoController {
         // @Body('name') name : string,
 
         @Body() newTodo : AddTodoDto
-    ){
+    ): Todo {
         
         // console.log(newTodo);
 
         // console.log(id,name)
-
-        const todo = new Todo();
-        const {name,desc} = newTodo;
-        todo.name=name;
-        todo.desc=desc;
-
-        if(this.todos.length) {
-            todo.id=this.todos[this.todos.length-1].id+1;
-        }else{
-            todo.id=1;
-        }
-
-        this.todos.push(todo);
-    
-        return todo;
+        return this.todoService.addTodo(newTodo);
+       
     }
 
     //Supprimer Todo par ID
