@@ -75,8 +75,27 @@ export class TodoController {
         return newTodo;
     }
 
-    @Delete()
-    deleteTodo(){
+    //supprimer un todo via id
+    @Delete(':id')
+    deleteTodo(
+        @Param('id') id
+    ){
+        //slice to delete if exists, else error
+        const index=this.todos.findIndex(
+            (todo: Todo) => todo.id === +id
+        );
+
+        if (index>=0){
+            this.todos.slice(index,1);
+        }else{
+            throw new NotFoundException("Le todo d'id"+id+" nexiste pas");
+        }
+
+        return {
+            message : 'Todo d id '+id+' supprimé', 
+            count : 1
+        };
+
         console.log('Supp todo');
         return 'Delete TODO';
     }
