@@ -43,14 +43,7 @@ export class TodoController {
     getTodoByID(
         @Param('id') id
     ){
-        const todo = this.todos.find(
-            //+ to convert string to int
-            (actualTodo: Todo) => 
-                actualTodo.id === +id 
-        );
-        if (todo) 
-            return todo;
-        throw new NotFoundException("Todo with id "+id +" doesnt exist");
+        this.todoService.getTodoById(id);
     }
 
     //Ajouter Todo

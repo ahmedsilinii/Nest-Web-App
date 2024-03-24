@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Todo } from './entities/todo.entity';
 import { AddTodoDto } from './dto/add-todo.dto';
 
@@ -26,8 +26,17 @@ export class TodoService {
             name,
             desc,
             createdAt : new Date()
-        }
-    
-        
+        }   
+    }
+
+    getTodoById(id): Todo{
+        const todo = this.todos.find(
+            //+ to convert string to int
+            (actualTodo: Todo) => 
+                actualTodo.id === +id 
+        );
+        if (todo) 
+            return todo;
+        throw new NotFoundException("Todo with id "+id +" doesnt exist");
     }
 }
