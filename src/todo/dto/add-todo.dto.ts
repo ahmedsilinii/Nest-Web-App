@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, MinLength } from "class-validator";
+import { IsNotEmpty, IsString, MaxLength, MinLength } from "class-validator";
 
 export class AddTodoDto{
     @IsString()
@@ -8,7 +8,8 @@ export class AddTodoDto{
         {
             message : 'La taille min est 6 char'
         },
-     )
+    )
+    @MaxLength(25)
     name : string;
 
     @IsString()
