@@ -4,7 +4,7 @@ import { AddTodoDto } from './dto/add-todo.dto';
 
 @Injectable()
 export class TodoService {
-    todos: Todo[];
+    todos: Todo[] = [];
 
     getTodos(): Todo[]{
         return this.todos;
@@ -21,12 +21,17 @@ export class TodoService {
             id=1;
         }
 
-        return {
+
+        const todo= {
             id,
             name,
             desc,
             createdAt : new Date()
-        }   
+        }
+
+        this.todos.push(todo);
+        
+        return todo;
     }
 
     getTodoById(id: number): Todo{
@@ -46,7 +51,7 @@ export class TodoService {
         );
 
         if (index>=0){
-            this.todos.slice(index,1);
+            this.todos.splice(index,1);
         }else{
             throw new NotFoundException("Le todo d'id"+id+" nexiste pas");
         }

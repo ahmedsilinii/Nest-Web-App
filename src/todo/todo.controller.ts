@@ -16,7 +16,7 @@ export class TodoController {
     @Get()
     getTodos(
         @Query() mesQueryParams: GetPaginatedTodo
-    ){
+    ):Todo[] {
         console.log(mesQueryParams);
         return this.todoService.getTodos();
     }  
@@ -70,7 +70,7 @@ export class TodoController {
         @Param('id') id
     ){
        
-        this.todoService.deleteTodo(+id);
+        return this.todoService.deleteTodo(+id);
     }
 
     //Modifier Todo
