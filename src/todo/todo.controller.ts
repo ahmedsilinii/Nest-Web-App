@@ -34,7 +34,7 @@ export class TodoController {
         })
         
 
-        return this.todos;
+        return this.todoService.getTodos();
     }
 
     
@@ -79,9 +79,6 @@ export class TodoController {
         @Param('id') id,
         @Body() newTodo : Partial<AddTodoDto>
     ){
-        const todo= this.getTodoByID(id);
-        todo.desc = newTodo.desc? newTodo.desc : todo.desc;
-        todo.name= newTodo.name? newTodo.name : todo.name;
-        return todo;
+       return this.todoService.updateTodo(+id,newTodo);
     }
 }
