@@ -1,6 +1,8 @@
 import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, Query, Req, Res } from '@nestjs/common';
 import {Request , Response} from 'express'; 
 import { Todo } from './entities/todo.entity';
+import { GetPaginatedTodo } from './dto/get-paginated-todo.dto';
+import { AddTodoDto } from './dto/add-todo.dto';
 
 @Controller('todo')
 export class TodoController {
@@ -9,16 +11,15 @@ export class TodoController {
     constructor(){
         this.todos= [];
     }
-    
 
+    //Rcuperer La liste des todos
     @Get()
     getTodos(
-        @Query() mesQueryParams
+        @Query() mesQueryParams: GetPaginatedTodo
     ){
         console.log(mesQueryParams);
         return this.todos;
     }  
-
 
     @Get('v2')
     getTodosV2(
@@ -36,6 +37,7 @@ export class TodoController {
         return this.todos;
     }
 
+    //Recuperer Todo par ID
     @Get('/:id')
     getTodoByID(
         @Param('id') id
@@ -50,6 +52,7 @@ export class TodoController {
         throw new NotFoundException("Todo with id "+id +" doesnt exist");
     }
 
+    //Ajouter Todo
     @Post()
     addTodo(
         // @Body() newTodo
@@ -57,25 +60,30 @@ export class TodoController {
         // @Body('id') id : string,
         // @Body('name') name : string,
 
-        @Body() newTodo : Todo
+        @Body() newTodo : AddTodoDto
     ){
         
         // console.log(newTodo);
 
         // console.log(id,name)
 
+        const todo = new Todo();
+        const {name,desc} = newTodo;
+        todo.name=name;
+        todo.desc=desc;
+
         if(this.todos.length) {
-            newTodo.id=this.todos[this.todos.length-1].id+1;
+            todo.id=this.todos[this.todos.length-1].id+1;
         }else{
-            newTodo.id=1;
+            todo.id=1;
         }
 
-        this.todos.push(newTodo);
+        this.todos.push(todo);
     
-        return newTodo;
+        return todo;
     }
 
-    //supprimer un todo via id
+    //Supprimer Todo par ID
     @Delete(':id')
     deleteTodo(
         @Param('id') id
@@ -100,10 +108,11 @@ export class TodoController {
         return 'Delete TODO';
     }
 
+    //Modifier Todo
     @Put(':id')
     modifTodo(
         @Param('id') id,
-        @Body() newTodo : Partial<Todo>
+        @Body() newTodo : Partial<AddTodoDto>
     ){
         const todo= this.getTodoByID(id);
         todo.desc = newTodo.desc? newTodo.desc : todo.desc;
