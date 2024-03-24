@@ -37,7 +37,7 @@ export class TodoController {
     }
 
     @Get('/:id')
-    getTodo(
+    getTodoByID(
         @Param('id') id
     ){
         const todo = this.todos.find(
@@ -100,9 +100,14 @@ export class TodoController {
         return 'Delete TODO';
     }
 
-    @Put()
-    modifTodo(){
-        console.log('modif todo');
-        return 'Modif TODO';
+    @Put(':id')
+    modifTodo(
+        @Param('id') id,
+        @Body() newTodo : Partial<Todo>
+    ){
+        const todo= this.getTodoByID(id);
+        todo.desc = newTodo.desc? newTodo.desc : todo.desc;
+        todo.name= newTodo.name? newTodo.name : todo.name;
+        return todo;
     }
 }
