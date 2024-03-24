@@ -3,14 +3,14 @@ import {Request , Response} from 'express';
 import { Todo } from './entities/todo.entity';
 import { GetPaginatedTodo } from './dto/get-paginated-todo.dto';
 import { AddTodoDto } from './dto/add-todo.dto';
+import { TodoService } from './todo.service';
 
 @Controller('todo')
 export class TodoController {
-    todos: Todo[];
 
-    constructor(){
-        this.todos= [];
-    }
+    constructor(
+        private todoService: TodoService
+    ){}
 
     //Rcuperer La liste des todos
     @Get()
@@ -18,7 +18,7 @@ export class TodoController {
         @Query() mesQueryParams: GetPaginatedTodo
     ){
         console.log(mesQueryParams);
-        return this.todos;
+        return this.todoService.getTodos();
     }  
 
     @Get('v2')
@@ -37,6 +37,7 @@ export class TodoController {
         return this.todos;
     }
 
+    
     //Recuperer Todo par ID
     @Get('/:id')
     getTodoByID(
