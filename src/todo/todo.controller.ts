@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, Query, Req, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Post, Put, Query, Req, Res } from '@nestjs/common';
 import {Request , Response} from 'express'; 
 import { Todo } from './entities/todo.entity';
 import { GetPaginatedTodo } from './dto/get-paginated-todo.dto';
@@ -41,9 +41,9 @@ export class TodoController {
     //Recuperer Todo par ID
     @Get('/:id')
     getTodoByID(
-        @Param('id') id
+        @Param('id',ParseIntPipe) id
     ){
-        return this.todoService.getTodoById(+id);
+        return this.todoService.getTodoById(id);
     }
 
     //Ajouter Todo
@@ -67,18 +67,18 @@ export class TodoController {
     //Supprimer Todo par ID
     @Delete(':id')
     deleteTodo(
-        @Param('id') id
+        @Param('id',ParseIntPipe) id
     ){
        
-        return this.todoService.deleteTodo(+id);
+        return this.todoService.deleteTodo(id);
     }
 
     //Modifier Todo
     @Put(':id')
     modifTodo(
-        @Param('id') id,
+        @Param('id',ParseIntPipe) id,
         @Body() newTodo : Partial<AddTodoDto>
     ){
-       return this.todoService.updateTodo(+id,newTodo);
+       return this.todoService.updateTodo(id,newTodo);
     }
 }
