@@ -6,8 +6,14 @@ import * as morgan from 'morgan';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  //block certain domains
+  const corsOptions={
+    origin : ['http://localhost:4200']
+  }
+  app.enableCors(corsOptions);
+
   app.use(morgan('dev'));
-  
+
   app.use(
     (req:Request, res: Response,next)=>{
       console.log("Middleware from app.use");
