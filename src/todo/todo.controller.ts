@@ -89,5 +89,11 @@ export class TodoController {
        return this.todoService.updateTodo(id,newTodo);
     }
 
-
+    //test UpperAndFusionPipe
+    @Post('pipe')
+    testPipe(
+      @Body(UpperAndFusionPipe) data
+    ){
+      return data;
+    }
 }
