@@ -1,11 +1,13 @@
-import { Body, Controller, Delete, Get, HttpStatus, NotFoundException, Param, ParseIntPipe, Post, Put, Query, Req, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, NotFoundException, Param, ParseIntPipe, Post, Put, Query, Req, Res, UseInterceptors } from '@nestjs/common';
 import {Request , Response} from 'express'; 
 import { Todo } from './entities/todo.entity';
 import { GetPaginatedTodo } from './dto/get-paginated-todo.dto';
 import { AddTodoDto } from './dto/add-todo.dto';
 import { TodoService } from './todo.service';
 import { UpperAndFusionPipe } from 'src/pipes/upper-and-fusion/upper-and-fusion.pipe';
+import { DurationInterceptor } from 'src/interceptors/duration.interceptor';
 
+@UseInterceptors(DurationInterceptor)
 @Controller('todo')
 export class TodoController {
 
