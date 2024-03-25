@@ -4,11 +4,14 @@ import { ValidationPipe } from '@nestjs/common';
 import * as morgan from 'morgan';
 import * as dotenv from 'dotenv';
 import { DurationInterceptor } from './interceptors/duration.interceptor';
+import { ConfigService } from '@nestjs/config';
 
 
 dotenv.config();
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  const configService = app.get(ConfigService);
 
   //Middlewares
   const corsOptions={
@@ -36,7 +39,7 @@ async function bootstrap() {
   //Interceptors
   app.useGlobalInterceptors(new DurationInterceptor());
 
-  await app.listen(process.env.APP_PORT);
+  await app.listen(configService.get('APP_PORT'));
 
 }
 bootstrap();
