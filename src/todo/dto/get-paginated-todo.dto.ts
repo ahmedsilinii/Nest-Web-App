@@ -11,5 +11,8 @@ export class GetPaginatedTodo{
 
     @IsNumber()
     @IsOptional()
+    @Type(
+        () => Number
+    )
     item : number;
 }
