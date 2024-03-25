@@ -15,18 +15,14 @@ import { logger } from './middlewares/logger.middleware';
 
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(FirstMiddleware,logger).forRoutes(
-    'hello',
-    {
-      //* anyth after todo
-      path:'todo*',
-      method: RequestMethod.DELETE
-    },
-    {
-      path:'todo',
-      method: RequestMethod.GET
-    },
-    );
+    consumer
+    .apply(FirstMiddleware).forRoutes(
+      'hello',
+      { path:'todo*', method: RequestMethod.DELETE },
+      { path:'todo', method: RequestMethod.GET },
+    )
+   .apply(logger).forRoutes('');
+
   }
 }
 

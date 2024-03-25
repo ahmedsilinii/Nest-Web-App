@@ -18,12 +18,11 @@ export class TodoController {
     getTodos(
         @Query() mesQueryParams: GetPaginatedTodo
     ):Todo[] {
-        console.log(mesQueryParams);
         return this.todoService.getTodos();
     }  
 
     @Get('v2')
-    getTodosV2(
+    getTodosV2( 
         @Req() request: Request,
         @Res() response: Response,
     ){
