@@ -7,7 +7,6 @@ import { TodoService } from './todo.service';
 import { UpperAndFusionPipe } from 'src/pipes/upper-and-fusion/upper-and-fusion.pipe';
 import { DurationInterceptor } from 'src/interceptors/duration.interceptor';
 
-@UseInterceptors(DurationInterceptor)
 @Controller('todo')
 export class TodoController {
 
