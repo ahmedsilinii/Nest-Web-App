@@ -2,8 +2,11 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import * as morgan from 'morgan';
+import * as dotenv from 'dotenv';
 import { DurationInterceptor } from './interceptors/duration.interceptor';
 
+
+dotenv.config();
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
@@ -33,6 +36,7 @@ async function bootstrap() {
   //Interceptors
   app.useGlobalInterceptors(new DurationInterceptor());
 
-  await app.listen(3000);
+  await app.listen(process.env.APP_PORT);
+
 }
 bootstrap();
