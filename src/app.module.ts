@@ -7,6 +7,7 @@ import { logger } from './middlewares/logger.middleware';
 import { HelmetMiddleware } from '@nest-middlewares/helmet';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CvModule } from './cv/cv.module';
 import * as dotenv from 'dotenv';
 
 
@@ -24,9 +25,10 @@ dotenv.config();
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [],
+      entities: ["dist/**/*.entity{.ts,.js}"],
       synchronize: true,
     }),
+    CvModule,
   ],
   controllers: [AppController],
   providers: [AppService],
