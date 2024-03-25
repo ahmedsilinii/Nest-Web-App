@@ -4,6 +4,7 @@ import { Todo } from './entities/todo.entity';
 import { GetPaginatedTodo } from './dto/get-paginated-todo.dto';
 import { AddTodoDto } from './dto/add-todo.dto';
 import { TodoService } from './todo.service';
+import { UpperAndFusionPipe } from 'src/pipes/upper-and-fusion/upper-and-fusion.pipe';
 
 @Controller('todo')
 export class TodoController {
@@ -37,7 +38,6 @@ export class TodoController {
         return this.todoService.getTodos();
     }
 
-    
     //Recuperer Todo par ID
     @Get('/:id')
     getTodoByID(
@@ -88,4 +88,6 @@ export class TodoController {
     ){
        return this.todoService.updateTodo(id,newTodo);
     }
+
+
 }
