@@ -45,5 +45,8 @@ export class CvService {
         return this.cvRepository.remove(cvToRemove);
     }
 
+    async deleteCv(id: number) {
+        return this.cvRepository.delete(id);
+    }
 }
 

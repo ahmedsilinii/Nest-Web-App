@@ -47,7 +47,8 @@ export class CvController {
     async removeCv(
         @Param('id',ParseIntPipe) id: number
     ) {
-        return this.cvService.removeCv(id);
+        // return this.cvService.removeCv(id);
+        return this.cvService.deleteCv(id);
     }
 
 
