@@ -50,9 +50,12 @@ export class CvController {
     }
     
     //stats
-    @Get('stats')
-    async getStat() {
-        return this.cvService.statCvNumberByAge();
+    @Get('stats/:max/:min')
+    async getStat(
+        @Param('max',ParseIntPipe) max: number,
+        @Param('min',ParseIntPipe) min: number
+    ) {
+        return this.cvService.statCvNumberByAge(max,min);
     }
 
     @Get(':id')
