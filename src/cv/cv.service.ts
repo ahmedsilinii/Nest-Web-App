@@ -73,5 +73,9 @@ export class CvService {
         return this.cvRepository.recover(cvToRecover);
 
     }
+
+    async restoreCv(id: number) {
+        return this.cvRepository.restore(id);
+    }
 }
 
