@@ -21,7 +21,6 @@ export class AddCvDto {
     @IsNotEmpty()
     @Type(() => Number)
     @IsNumber()
-    @Length(8)
     cin : number;
 
     @IsNotEmpty()
