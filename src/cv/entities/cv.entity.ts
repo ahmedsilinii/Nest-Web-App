@@ -1,5 +1,6 @@
 import { TimeStampEntities } from "generic/timestamp.entities";
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { UserEntity } from "src/user/entities/user.entity/user.entity";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity('cv')
 export default class CvEntity extends TimeStampEntities {
@@ -31,6 +32,10 @@ export default class CvEntity extends TimeStampEntities {
     @Column() 
     path: string;
 
-   
+    @ManyToOne(
+        type => UserEntity,
+        user => user.cvs
+    )     
+    user: UserEntity;
 
 }
