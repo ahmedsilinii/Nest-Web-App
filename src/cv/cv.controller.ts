@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import CvEntity from './entities/cv.entity/cv.entity';
+import CvEntity from './entities/cv.entity';
 import { CvService } from './cv.service';
 
 @Controller('cv')

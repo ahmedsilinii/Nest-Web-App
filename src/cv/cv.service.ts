@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import CvEntity from './entities/cv.entity/cv.entity';
+import CvEntity from './entities/cv.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -13,5 +13,7 @@ export class CvService {
     async getCvs(): Promise<CvEntity[]> {
         return await this.cvRepository.find();
     }
+
+    addCv
 }
 
