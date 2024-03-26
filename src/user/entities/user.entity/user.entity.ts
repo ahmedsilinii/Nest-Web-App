@@ -1,4 +1,4 @@
-import { TimeStampEntities } from "generic/timestamp.entities";
+import { TimeStampEntities } from "src/generic/timestamp.entities";
 import CvEntity from "src/cv/entities/cv.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
@@ -17,6 +17,15 @@ export class UserEntity extends TimeStampEntities{
         unique: true,
     })
     email:string;
+
+    @Column()
+    password: string;
+
+    @Column()
+    salt: string;
+    
+    @Column()
+    role: string;
 
     @OneToMany(
         type => CvEntity,
