@@ -34,7 +34,12 @@ export default class CvEntity extends TimeStampEntities {
 
     @ManyToOne(
         type => UserEntity,
-        user => user.cvs
+        user => user.cvs,
+        {
+            cascade: true,
+            nullable: true,
+            eager: true
+        }
     )     
     user: UserEntity;
 
