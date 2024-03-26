@@ -53,6 +53,7 @@ export class CvController {
         return this.cvService.softDeleteCv(id);
     }
 
+    //zeyda recover
     @Get('recover/:id')
     async recoverCv(
         @Param('id',ParseIntPipe) id: number
@@ -60,7 +61,14 @@ export class CvController {
         return await this.cvService.recoverCv(id);
     }
 
-
+    //restore fel bd but still invisible
+    @Get('restore/:id')
+    async restoreCv(
+        @Param('id',ParseIntPipe) id: number
+    ) {
+        return await this.cvService.restoreCv(id);
+    }
+    
 
 
 
