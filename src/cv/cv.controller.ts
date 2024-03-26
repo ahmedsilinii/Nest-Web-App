@@ -16,6 +16,13 @@ export class CvController {
         return this.cvService.getCvs();
     }
 
+    @Get(':id')
+    async getCvById(
+        @Param('id',ParseIntPipe) id: number
+    ) {
+        return await this.cvService.findCvById(id);
+    }
+
     //add cv
     @Post()
     async addCv(
@@ -69,7 +76,11 @@ export class CvController {
         return await this.cvService.restoreCv(id);
     }
     
-
+    
+    @Get('stat')
+    async getStat() {
+        return this.cvService.statCvNumberByAge();
+    }
 
 
 
