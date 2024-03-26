@@ -33,7 +33,7 @@ export class CvController {
         return await this.cvService.updateCv(id, cv);
     }
 
-    //update cv
+    //update cv with criteria
     @Patch()
     async updateCv2(
         @Body() updateObject,
@@ -47,8 +47,9 @@ export class CvController {
     async removeCv(
         @Param('id',ParseIntPipe) id: number
     ) {
-        // return this.cvService.removeCv(id);
-        return this.cvService.deleteCv(id);
+        //return this.cvService.removeCv(id);
+        // return this.cvService.deleteCv(id);
+        return this.cvService.softRemoveCv(id);
     }
 
 
