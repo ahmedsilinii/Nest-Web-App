@@ -35,13 +35,18 @@ export class CvService {
         return this.cvRepository.update(updateCriteria, cv);
     }
 
+    async findCvById(id: number) {
+        const cv = await this.cvRepository.findOne({
+            where: { id: id } 
+        });
+       if (!cv) {
+           throw new NotFoundException(`cv with id ${id} not found`);
+       }
+        return cv;
+    }
+
     async removeCv(id: number) {
-        const cvToRemove = await this.cvRepository.findOne({
-             where: { id: id } 
-         });
-        if (!cvToRemove) {
-            throw new NotFoundException(`cv with id ${id} not found`);
-        }
+        const cvToRemove =await this.findCvById(id);
         return this.cvRepository.remove(cvToRemove);
     }
 
@@ -57,6 +62,16 @@ export class CvService {
            throw new NotFoundException(`cv with id ${id} not found`);
        }
         return this.cvRepository.softRemove(cvToRemove);
+    }
+
+    async softDeleteCv(id: number) {
+        return this.cvRepository.softDelete(id);
+    }
+
+    async recoverCv(id: number) {
+        const cvToRecover=await this.findCvById(id);
+        return this.cvRepository.recover(cvToRecover);
+
     }
 }
 
