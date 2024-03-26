@@ -1,6 +1,7 @@
 import { TimeStampEntities } from "src/generic/timestamp.entities";
 import CvEntity from "src/cv/entities/cv.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { UserRoleEnum } from "src/enums/user-role.enum";
 
 @Entity('user')
 export class UserEntity extends TimeStampEntities{
@@ -24,7 +25,11 @@ export class UserEntity extends TimeStampEntities{
     @Column()
     salt: string;
     
-    @Column()
+    @Column({
+        type: 'enum',
+        enum: UserRoleEnum,
+        default: UserRoleEnum.USER
+    })
     role: string;
 
     @OneToMany(
@@ -33,7 +38,6 @@ export class UserEntity extends TimeStampEntities{
         {
             cascade: ['insert', 'update'],
             nullable: true,
-            eager: true
         }
     )
     cvs: CvEntity[];
