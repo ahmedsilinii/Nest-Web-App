@@ -77,5 +77,16 @@ export class CvService {
     async restoreCv(id: number) {
         return this.cvRepository.restore(id);
     }
+
+    async statCvNumberByAge(){
+        const qb= this.cvRepository.createQueryBuilder('cv');
+        
+        return await qb.select('cv.age as age,count (cv.id) as count')
+         .groupBy('age')
+         .getMany();
+        
+      
+
+    }
 }
 
