@@ -1,5 +1,5 @@
 import { TimeStampEntities } from "src/generic/timestamp.entities";
-import { UserEntity } from "src/user/entities/user.entity/user.entity";
+import { UserEntity } from "src/user/entities/user.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity('cv')
