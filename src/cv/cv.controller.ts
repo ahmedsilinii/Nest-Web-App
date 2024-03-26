@@ -16,28 +16,12 @@ export class CvController {
         return this.cvService.getCvs();
     }
 
-    @Get(':id')
-    async getCvById(
-        @Param('id',ParseIntPipe) id: number
-    ) {
-        return await this.cvService.findCvById(id);
-    }
-
     //add cv
     @Post()
     async addCv(
         @Body() cv: AddCvDto
     ): Promise<CvEntity> {
         return await this.cvService.addCv(cv);
-    }
-
-    //update cv
-    @Patch(':id')
-    async updateCv(
-        @Body() cv: UpdateCvDto,
-        @Param('id',ParseIntPipe) id: number 
-    ): Promise<CvEntity> {
-        return await this.cvService.updateCv(id, cv);
     }
 
     //update cv with criteria
@@ -47,17 +31,6 @@ export class CvController {
     )  {
         const {updateCriteria, updateCvDto} = updateObject;
         return  this.cvService.updateCv2(updateCriteria, updateCvDto);
-    }
-
-    //delete cv
-    @Delete(':id')
-    async removeCv(
-        @Param('id',ParseIntPipe) id: number
-    ) {
-        //return this.cvService.removeCv(id);
-        // return this.cvService.deleteCv(id);
-        // return this.cvService.softRemoveCv(id);
-        return this.cvService.softDeleteCv(id);
     }
 
     //zeyda recover
@@ -76,13 +49,37 @@ export class CvController {
         return await this.cvService.restoreCv(id);
     }
     
-    
-    @Get('stat')
+    //stats
+    @Get('stats')
     async getStat() {
         return this.cvService.statCvNumberByAge();
     }
 
+    @Get(':id')
+    async getCvById(
+        @Param('id',ParseIntPipe) id: number
+    ) {
+        return await this.cvService.findCvById(id);
+    }
 
+    //delete cv
+    @Delete(':id')
+    async removeCv(
+        @Param('id',ParseIntPipe) id: number
+    ) {
+        //return this.cvService.removeCv(id);
+        // return this.cvService.deleteCv(id);
+        // return this.cvService.softRemoveCv(id);
+        return this.cvService.softDeleteCv(id);
+    }
 
+      //update cv
+    @Patch(':id')
+    async updateCv(
+        @Body() cv: UpdateCvDto,
+        @Param('id',ParseIntPipe) id: number 
+    ): Promise<CvEntity> {
+        return await this.cvService.updateCv(id, cv);
+    }
 
 }
