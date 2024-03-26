@@ -12,7 +12,8 @@ export class TodoController {
 
     constructor(
         private todoService: TodoService
-    ){}
+    ){
+    }
 
     //Rcuperer La liste des todos
     @Get()
