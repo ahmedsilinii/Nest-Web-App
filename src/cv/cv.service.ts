@@ -118,11 +118,20 @@ export class CvService {
             throw new UnauthorizedException();
     }
     
-
-    
-
-    async restoreCv(id: number) {
-        return this.cvRepository.restore(id);
+    async restoreCv(id: number,user) {
+        const cv =await this.cvRepository.findOne({where: {id}});
+        console.log(cv);
+        if(!cv.user){
+            throw new NotFoundException(`allah la trabhek`);
+        }
+        if (!cv) {
+            throw new NotFoundException(`cv with id ${id} not found`);
+        }
+        if (this.userService.isOwnerOrAdmin(cv, user))
+            return await this.cvRepository.restore(id);
+        else
+            throw new UnauthorizedException();
+       
     }
 
     async statCvNumberByAge(maxAge, minAge =0){
