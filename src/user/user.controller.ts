@@ -12,7 +12,7 @@ export class UserController {
     @Post()
     register(
         @Body() userData : UserSubscribeDto
-    ): Promise<UserEntity>{
+    ): Promise<Partial<UserEntity>>{
         return this.userService.register(userData);
     }
 }
