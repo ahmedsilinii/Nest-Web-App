@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { AddCvDto } from './dto/add-cv.dto';
 import { UpdateCvDto } from './dto/update-cv.dto';
 import { UserEntity } from 'src/user/entities/user.entity';
+import { UserRoleEnum } from 'src/enums/user-role.enum';
 
 @Injectable()
 export class CvService {
@@ -13,8 +14,12 @@ export class CvService {
         private cvRepository: Repository<CvEntity>
     ) {}   
     
-    async getCvs(): Promise<CvEntity[]> {
-        return await this.cvRepository.find();
+    async getCvs(user): Promise<CvEntity[]> {
+        if (user.role === UserRoleEnum.ADMIN)
+            return await this.cvRepository.find();
+        return await this.cvRepository.createQueryBuilder('cv')
+            .where('cv.user.id = :userId', { userId: user.id })
+            .getMany();
     }
 
     async addCv(cv: AddCvDto, user: UserEntity) : Promise<CvEntity> {

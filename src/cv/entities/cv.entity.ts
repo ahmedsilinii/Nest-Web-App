@@ -41,6 +41,7 @@ export default class CvEntity extends TimeStampEntities {
             eager: true
         }
     )     
+    
     user: UserEntity;
 
 }

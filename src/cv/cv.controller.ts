@@ -4,6 +4,7 @@ import { CvService } from './cv.service';
 import { AddCvDto } from './dto/add-cv.dto';
 import { UpdateCvDto } from './dto/update-cv.dto';
 import { JwtAuthGuard } from 'src/user/guards/jwt-auth.guard';
+import { User } from 'src/decorators/user-decorator';
 
 @Controller('cv')
 export class CvController {
@@ -13,8 +14,11 @@ export class CvController {
 
     //get all cv
     @Get()
-    async getAllCvs(): Promise<CvEntity[]>{
-        return this.cvService.getCvs();
+    @UseGuards(JwtAuthGuard)
+    async getAllCvs(
+        @User() user
+    ): Promise<CvEntity[]>{
+        return this.cvService.getCvs(user);
     }
 
     //add cv

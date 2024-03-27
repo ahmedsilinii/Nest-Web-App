@@ -36,7 +36,6 @@ export class UserService {
         };
     }
     
-
     /*basic login
     async login (credentials: LoginCredentialsDto): Promise<Partial<UserEntity>> {
         const {username,password} = credentials;
@@ -62,6 +61,7 @@ export class UserService {
     }
     */
 
+    //login with jwt
     async login (credentials: LoginCredentialsDto) {
         const {username,password} = credentials;
 
