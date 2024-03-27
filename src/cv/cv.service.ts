@@ -71,15 +71,20 @@ export class CvService {
        }
     }
 
+    /*remove
     async removeCv(id: number,user) {
         const cvToRemove =await this.findCvById(id,user);
         return this.cvRepository.remove(cvToRemove);
     }
+    */
 
+    /*delete
     async deleteCv(id: number) {
         return this.cvRepository.delete(id);
     }
+    */
 
+    /*soft remove
     async softRemoveCv(id: number) {
         const cvToRemove = await this.cvRepository.findOne({
             where: { id: id } 
@@ -89,16 +94,29 @@ export class CvService {
        }
         return this.cvRepository.softRemove(cvToRemove);
     }
+    */
 
-    async softDeleteCv(id: number) {
-        return this.cvRepository.softDelete(id);
-    }
-
+    /*recover lel soft remove
     async recoverCv(id: number,user) {
         const cvToRecover=await this.findCvById(id,user);
         return this.cvRepository.recover(cvToRecover);
 
     }
+    */
+
+    async softDeleteCv(id: number,user) {
+        const cv =await this.cvRepository.findOne({where: {id}});
+        if (!cv) {
+            throw new NotFoundException(`cv with id ${id} not found`);
+        }
+        if (this.userService.isOwnerOrAdmin(cv, user))
+            return await this.cvRepository.softDelete(id);
+        else
+            throw new UnauthorizedException();
+    }
+    
+
+    
 
     async restoreCv(id: number) {
         return this.cvRepository.restore(id);

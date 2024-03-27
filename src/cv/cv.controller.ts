@@ -19,7 +19,6 @@ export class CvController {
     async getAllCvs(
         @User() user
     ): Promise<CvEntity[]>{
-        console.log(user);
         return this.cvService.getCvs(user);
     }
 
@@ -43,15 +42,6 @@ export class CvController {
         return  this.cvService.updateCv2(updateCriteria, updateCvDto);
     }
 
-    //zeyda recover
-    @Get('recover/:id')
-    @UseGuards(JwtAuthGuard)
-    async recoverCv(
-        @Param('id',ParseIntPipe) id: number,
-        @User() user
-    ) {
-        return await this.cvService.recoverCv(id,user);
-    }
 
     //restore fel bd but still invisible
     @Get('restore/:id')
@@ -87,12 +77,13 @@ export class CvController {
     @Delete(':id')
     @UseGuards(JwtAuthGuard)
     async removeCv(
-        @Param('id',ParseIntPipe) id: number
+        @Param('id',ParseIntPipe) id: number,
+        @User() user
     ) {
         //return this.cvService.removeCv(id);
         // return this.cvService.deleteCv(id);
         // return this.cvService.softRemoveCv(id);
-        return this.cvService.softDeleteCv(id);
+        return this.cvService.softDeleteCv(id,user);
     }
 
       //update cv
@@ -103,7 +94,7 @@ export class CvController {
         @Param('id',ParseIntPipe) id: number,
         @User() user
     ): Promise<CvEntity> {
-        return await this.cvService.updateCv(id, cv,user);
+        return  this.cvService.updateCv(id, cv,user);
     }
 
 }
