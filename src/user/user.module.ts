@@ -3,10 +3,10 @@ import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
-import { Passport } from 'passport';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import * as dotenv from 'dotenv';
+import { JwtStrategy } from './strategy/passport-jwt.strategy';
 
 dotenv.config();
 @Module({
@@ -23,6 +23,6 @@ dotenv.config();
     }),
   ],
   controllers: [UserController],
-  providers: [UserService]
+  providers: [UserService,JwtStrategy]
 })
 export class UserModule {}
