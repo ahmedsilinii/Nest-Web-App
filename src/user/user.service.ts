@@ -37,7 +37,7 @@ export class UserService {
         const {username,password} = credentials;
 
         const user = await this.userRepository.createQueryBuilder('user') 
-        .where("user.username = :username or user.password = :username", {username})
+        .where("user.username = :username or user.email = :username", {username})
         .getOne();
 
         if (!user){
@@ -55,4 +55,6 @@ export class UserService {
             throw new NotFoundException('User or password not found');
         }
     }
+
+
 }
