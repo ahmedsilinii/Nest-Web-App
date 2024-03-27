@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import CvEntity from './entities/cv.entity';
 import { CvService } from './cv.service';
 import { AddCvDto } from './dto/add-cv.dto';
 import { UpdateCvDto } from './dto/update-cv.dto';
+import { JwtAuthGuard } from 'src/user/guards/jwt-auth.guard';
 
 @Controller('cv')
 export class CvController {
@@ -18,14 +19,18 @@ export class CvController {
 
     //add cv
     @Post()
+    @UseGuards(JwtAuthGuard)
     async addCv(
-        @Body() cv: AddCvDto
+        @Body() cv: AddCvDto,
+        @Req() req
     ): Promise<CvEntity> {
-        return await this.cvService.addCv(cv);
+        const user = req.user;
+        return await this.cvService.addCv(cv, user);
     }
 
     //update cv with criteria
     @Patch()
+    @UseGuards(JwtAuthGuard)
     async updateCv2(
         @Body() updateObject,
     )  {
@@ -35,6 +40,7 @@ export class CvController {
 
     //zeyda recover
     @Get('recover/:id')
+    @UseGuards(JwtAuthGuard)
     async recoverCv(
         @Param('id',ParseIntPipe) id: number
     ) {
@@ -43,6 +49,7 @@ export class CvController {
 
     //restore fel bd but still invisible
     @Get('restore/:id')
+    @UseGuards(JwtAuthGuard)
     async restoreCv(
         @Param('id',ParseIntPipe) id: number
     ) {
@@ -51,6 +58,7 @@ export class CvController {
     
     //stats
     @Get('stats/:max/:min')
+    @UseGuards(JwtAuthGuard)
     async getStat(
         @Param('max',ParseIntPipe) max: number,
         @Param('min',ParseIntPipe) min: number
@@ -67,6 +75,7 @@ export class CvController {
 
     //delete cv
     @Delete(':id')
+    @UseGuards(JwtAuthGuard)
     async removeCv(
         @Param('id',ParseIntPipe) id: number
     ) {
@@ -78,6 +87,7 @@ export class CvController {
 
       //update cv
     @Patch(':id')
+    @UseGuards(JwtAuthGuard)
     async updateCv(
         @Body() cv: UpdateCvDto,
         @Param('id',ParseIntPipe) id: number 

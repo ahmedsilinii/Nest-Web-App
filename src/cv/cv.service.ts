@@ -4,6 +4,7 @@ import CvEntity from './entities/cv.entity';
 import { Repository } from 'typeorm';
 import { AddCvDto } from './dto/add-cv.dto';
 import { UpdateCvDto } from './dto/update-cv.dto';
+import { UserEntity } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class CvService {
@@ -16,8 +17,10 @@ export class CvService {
         return await this.cvRepository.find();
     }
 
-    async addCv(cv: AddCvDto) : Promise<CvEntity> {
-        return await this.cvRepository.save(cv);
+    async addCv(cv: AddCvDto, user: UserEntity) : Promise<CvEntity> {
+        const newCv = this.cvRepository.create(cv);
+        newCv.user = user;
+        return await this.cvRepository.save(newCv);
     }
 
     async updateCv(id: number,cv: UpdateCvDto): Promise<CvEntity> {

@@ -52,7 +52,7 @@ export class UserService {
         const hashedPassword = await bcrypt.hash(password, user.salt);
         if (hashedPassword === user.password){
             return {
-                username,
+                username: user.username,
                 email: user.email,
                 role: user.role
             };
@@ -77,12 +77,12 @@ export class UserService {
         if (hashedPassword === user.password){
 
             const payload =  {
-                username,
+                username : user.username,
                 email: user.email,
                 role: user.role
             }
 
-            const jwt = await this.jwtService.sign(payload);
+            const jwt =  this.jwtService.sign(payload);
             
             return {
                 "access_token": jwt
