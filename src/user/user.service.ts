@@ -5,14 +5,17 @@ import { UserEntity } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LoginCredentialsDto } from './dto/login-credentials.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
     constructor(
         @InjectRepository(UserEntity)
-        private userRepository: Repository<UserEntity>
+        private userRepository: Repository<UserEntity>,
+        private jwtService: JwtService
     ) {}
 
+    //basjc register 
     async register (userData: UserSubscribeDto) : Promise<Partial<UserEntity>>{
         const user = this.userRepository.create({
             ...userData
@@ -32,7 +35,9 @@ export class UserService {
             password: user.password
         };
     }
+    
 
+    /*basic login
     async login (credentials: LoginCredentialsDto): Promise<Partial<UserEntity>> {
         const {username,password} = credentials;
 
@@ -50,6 +55,37 @@ export class UserService {
                 username,
                 email: user.email,
                 role: user.role
+            };
+        } else {
+            throw new NotFoundException('User or password not found');
+        }
+    }
+    */
+
+    async login (credentials: LoginCredentialsDto) {
+        const {username,password} = credentials;
+
+        const user = await this.userRepository.createQueryBuilder('user') 
+        .where("user.username = :username or user.email = :username", {username})
+        .getOne();
+
+        if (!user){
+            throw new NotFoundException('User or password not found');
+        }
+
+        const hashedPassword = await bcrypt.hash(password, user.salt);
+        if (hashedPassword === user.password){
+
+            const payload =  {
+                username,
+                email: user.email,
+                role: user.role
+            }
+
+            const jwt = await this.jwtService.sign(payload);
+            
+            return {
+                "access_token": jwt
             };
         } else {
             throw new NotFoundException('User or password not found');

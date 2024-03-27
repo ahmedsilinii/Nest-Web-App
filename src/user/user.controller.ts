@@ -17,11 +17,19 @@ export class UserController {
         return this.userService.register(userData);
     }
 
+    /*basic login
     @Post('login')
     login(
         @Body() credentials : LoginCredentialsDto
     ): Promise<Partial<UserEntity>>{
         return this.userService.login(credentials);
     }
+    */
 
+    @Post('login')
+    login(
+        @Body() credentials : LoginCredentialsDto
+    ) {
+        return this.userService.login(credentials);
+    }
 }
