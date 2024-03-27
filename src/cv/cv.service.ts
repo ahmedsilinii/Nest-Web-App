@@ -106,6 +106,9 @@ export class CvService {
 
     async softDeleteCv(id: number,user) {
         const cv =await this.cvRepository.findOne({where: {id}});
+        if(!cv.user){
+            throw new NotFoundException(`allah la trabhek`);
+        }
         if (!cv) {
             throw new NotFoundException(`cv with id ${id} not found`);
         }
