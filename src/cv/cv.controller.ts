@@ -1,15 +1,16 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Req, UnauthorizedException, UseGuards } from '@nestjs/common';
 import CvEntity from './entities/cv.entity';
 import { CvService } from './cv.service';
 import { AddCvDto } from './dto/add-cv.dto';
 import { UpdateCvDto } from './dto/update-cv.dto';
 import { JwtAuthGuard } from 'src/user/guards/jwt-auth.guard';
 import { User } from 'src/decorators/user-decorator';
+import { UserService } from 'src/user/user.service';
 
 @Controller('cv')
 export class CvController {
     constructor(
-        private readonly cvService: CvService
+        private readonly cvService: CvService,
     ){}
 
     //get all cv
@@ -18,6 +19,7 @@ export class CvController {
     async getAllCvs(
         @User() user
     ): Promise<CvEntity[]>{
+        console.log(user);
         return this.cvService.getCvs(user);
     }
 
@@ -26,9 +28,8 @@ export class CvController {
     @UseGuards(JwtAuthGuard)
     async addCv(
         @Body() cv: AddCvDto,
-        @Req() req
+        @User() user
     ): Promise<CvEntity> {
-        const user = req.user;
         return await this.cvService.addCv(cv, user);
     }
 
@@ -46,9 +47,10 @@ export class CvController {
     @Get('recover/:id')
     @UseGuards(JwtAuthGuard)
     async recoverCv(
-        @Param('id',ParseIntPipe) id: number
+        @Param('id',ParseIntPipe) id: number,
+        @User() user
     ) {
-        return await this.cvService.recoverCv(id);
+        return await this.cvService.recoverCv(id,user);
     }
 
     //restore fel bd but still invisible
@@ -71,10 +73,14 @@ export class CvController {
     }
 
     @Get(':id')
+    @UseGuards(JwtAuthGuard)
     async getCvById(
-        @Param('id',ParseIntPipe) id: number
+        @Param('id',ParseIntPipe) id: number,
+        @User() user
     ) {
-        return await this.cvService.findCvById(id);
+        console.log(user);
+
+        return await this.cvService.findCvById(id,user);
     }
 
     //delete cv
@@ -94,9 +100,10 @@ export class CvController {
     @UseGuards(JwtAuthGuard)
     async updateCv(
         @Body() cv: UpdateCvDto,
-        @Param('id',ParseIntPipe) id: number 
+        @Param('id',ParseIntPipe) id: number,
+        @User() user
     ): Promise<CvEntity> {
-        return await this.cvService.updateCv(id, cv);
+        return await this.cvService.updateCv(id, cv,user);
     }
 
 }

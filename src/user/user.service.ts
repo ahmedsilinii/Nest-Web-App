@@ -6,6 +6,7 @@ import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LoginCredentialsDto } from './dto/login-credentials.dto';
 import { JwtService } from '@nestjs/jwt';
+import { UserRoleEnum } from 'src/enums/user-role.enum';
 
 @Injectable()
 export class UserService {
@@ -92,5 +93,7 @@ export class UserService {
         }
     }
 
-
+    isOwnerOrAdmin(object,user){
+        return user.role === UserRoleEnum.ADMIN || object && object.user.id === user.id;
+    }
 }

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import CvEntity from './entities/cv.entity';
 import { Repository } from 'typeorm';
@@ -6,18 +6,20 @@ import { AddCvDto } from './dto/add-cv.dto';
 import { UpdateCvDto } from './dto/update-cv.dto';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { UserRoleEnum } from 'src/enums/user-role.enum';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class CvService {
     constructor (
         @InjectRepository(CvEntity)
-        private cvRepository: Repository<CvEntity>
+        private cvRepository: Repository<CvEntity>,
+        private userService: UserService
     ) {}   
     
     async getCvs(user): Promise<CvEntity[]> {
-        if (user.role === UserRoleEnum.ADMIN)
+        if (user && user.role === UserRoleEnum.ADMIN)
             return await this.cvRepository.find();
-        return await this.cvRepository.createQueryBuilder('cv')
+         return await this.cvRepository.createQueryBuilder('cv')
             .where('cv.user.id = :userId', { userId: user.id })
             .getMany();
     }
@@ -28,7 +30,7 @@ export class CvService {
         return await this.cvRepository.save(newCv);
     }
 
-    async updateCv(id: number,cv: UpdateCvDto): Promise<CvEntity> {
+    async updateCv(id: number,cv: UpdateCvDto,user): Promise<CvEntity> {
         const newCv = await this.cvRepository.preload( {
             id,
             ...cv
@@ -36,25 +38,41 @@ export class CvService {
         if (!newCv) {
             throw new NotFoundException(`cv with id ${id} not found`);
         }
-        return await this.cvRepository.save(newCv);
+        if(this.userService.isOwnerOrAdmin(newCv, user))
+            return await this.cvRepository.save(newCv);
+        else
+            throw new UnauthorizedException();
     }
 
     updateCv2(updateCriteria, cv: UpdateCvDto) {
         return this.cvRepository.update(updateCriteria, cv);
     }
 
-    async findCvById(id: number) {
+    async findCvById(id: number,user) {
         const cv = await this.cvRepository.findOne({
             where: { id: id } 
         });
-       if (!cv) {
-           throw new NotFoundException(`cv with id ${id} not found`);
+        if (!cv) {
+            throw new NotFoundException(`cv with id ${id} not found`);
+        }
+    
+        if (!user) {
+            throw new NotFoundException("mafamech user");
+        }
+    
+        if (!cv.user) {
+            throw new NotFoundException(`cv ma3andouch user yaan bouk`);
+        }
+    
+        if ( this.userService.isOwnerOrAdmin(cv, user)) {
+         return cv;
+        }else{
+         throw new UnauthorizedException();
        }
-        return cv;
     }
 
-    async removeCv(id: number) {
-        const cvToRemove =await this.findCvById(id);
+    async removeCv(id: number,user) {
+        const cvToRemove =await this.findCvById(id,user);
         return this.cvRepository.remove(cvToRemove);
     }
 
@@ -76,8 +94,8 @@ export class CvService {
         return this.cvRepository.softDelete(id);
     }
 
-    async recoverCv(id: number) {
-        const cvToRecover=await this.findCvById(id);
+    async recoverCv(id: number,user) {
+        const cvToRecover=await this.findCvById(id,user);
         return this.cvRepository.recover(cvToRecover);
 
     }
