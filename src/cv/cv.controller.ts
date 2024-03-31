@@ -47,9 +47,10 @@ export class CvController {
     @Get('restore/:id')
     @UseGuards(JwtAuthGuard)
     async restoreCv(
-        @Param('id',ParseIntPipe) id: number
+        @Param('id',ParseIntPipe) id: number,
+        @User() user
     ) {
-        return await this.cvService.restoreCv(id);
+        return await this.cvService.restoreCv(id,user);
     }
     
     //stats
